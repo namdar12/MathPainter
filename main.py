@@ -1,51 +1,42 @@
-import numpy as np
-from PIL import Image
-
-class Canvas:
-
-    def __init__(self, width, height, color):
-        self.width = width
-        self.height = height
-        self.color = color
-        self.data = np.zeros((self.width, self.height, 3), dtype=np.uint8)
-        self.data[:] = self.color
-
-
-    def make(self):  # Create a 3d numpy array of zeros
-        img = Image.fromarray(self.data, 'RGB')
-        img.save("canvas.png")
-
-
-class Square:
-
-    def __init__(self, point0, point1, size_of_side, color):
-        self.point0 = point0
-        self.point1 = point1
-        self.size_of_side = size_of_side
-        self.color = color
-
-    def draw(self,canvas):
-        canvas.data[self.point0:self.point0+self.size_of_side,self.point1:self.point1+self.size_of_side] = self.color
-
-
-class Rectangle:
-
-    def __init__(self, point0, point1, width, height, color):
-        self.point0 = point0
-        self.point1 = point1
-        self.width = width
-        self.height = height
-        self.color = color
-
-    def draw(self,canvas):
-        canvas.data[self.point0:self.point0 + self.width,self.point1:self.point1 + self.height] = self.color
+from Canvas import Canvas
+from Rectangle import Rectangle
+from Square import Square
 
 if __name__ == "__main__":
-    canvas = Canvas(1000,1000,[100,100,100])
-    square = Square(0,5,100,[105,110,115])
-    square.draw(canvas)
-    rectangle = Rectangle(110,115,100,200,[125,130,125])
-    rectangle.draw(canvas)
+    canvas_width = int(input("Please enter the width of the canvas: "))
+    canvas_height = int(input("Please enter the height of the canvas: "))
+    canvas_red = int(input("Please enter the how much red for canvas: "))
+    canvas_blue = int(input("Please enter the how much blue for canvas: "))
+    canvas_green = int(input("Please enter the how much green for canvas: "))
+
+    canvas = Canvas(canvas_width, canvas_height, [canvas_red, canvas_blue, canvas_green])
+    if canvas_height != None:
+        while True:
+            shape = input("Please enter the shape you would like to draw: ")
+            if shape.lower() == "square":
+                square_x = int(input("Please enter the point x of the square: "))
+                square_y = int(input("Please enter the point y of the square: "))
+                square_size = int(input("Please enter the size of the square: "))
+                square_red = int(input("Please enter the how much red for square: "))
+                square_blue = int(input("Please enter the how much blue for square: "))
+                square_green = int(input("Please enter the how much green for square: "))
+                square = Square(square_x, square_y, square_size, [square_red, square_blue, square_green])
+                square.draw(canvas)
+            elif shape.lower() == "rectangle":
+                rectangle_x = int(input("Please enter the point x of the rectangle: "))
+                rectangle_y = int(input("Please enter the point y of the rectangle: "))
+                rectangle_width = int(input("Please enter the width of the rectangle: "))
+                rectangle_height = int(input("Please enter the height of the rectangle: "))
+                rectangle_red = int(input("Please enter the how much red for rectangle: "))
+                rectangle_blue = int(input("Please enter the how much blue for rectangle: "))
+                rectangle_green = int(input("Please enter the how much green for rectangle: "))
+                rectangle = Rectangle(rectangle_x, rectangle_y, rectangle_width, rectangle_height,
+                                      [rectangle_red,rectangle_blue,rectangle_green])
+                rectangle.draw(canvas)
+            elif shape.lower() == "quit":
+                break
+            else:
+                print("Please enter Square or rectangle...Thanks: ")
+
     canvas.make()
 
-# Challenge create a circle shape class
